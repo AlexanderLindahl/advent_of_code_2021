@@ -3,28 +3,24 @@ import * as rd from "readline";
 import * as path from "path";
 
 export class InputUtil {
-  // Here we import the File System module of node
-  private fileName: string;
+  private reader: rd.Interface;
 
   constructor(fileName: string) {
-    this.fileName = fileName;
+    this.reader = rd.createInterface(
+      fs.createReadStream(path.join(__dirname, "../input") + fileName)
+    );
   }
 
   readFile = async (): Promise<string[]> => {
-    const reader = rd.createInterface(
-      fs.createReadStream(path.join(__dirname, "../input") + this.fileName)
-    );
-
     return new Promise((resolve) => {
       const lines: string[] = [];
 
-      reader.on("line", async (line: string) => {
-        console.log(line);
+      this.reader.on("line", async (line: string) => {
         lines.push(line);
       });
 
-      reader.on("close", () => {
-        console.log(`Data has been read,  ${lines}`);
+      this.reader.on("close", () => {
+        console.log(`Data has been read`);
         resolve(lines);
       });
     });
