@@ -20,7 +20,6 @@ export class InputUtil {
       });
 
       this.reader.on("close", () => {
-        console.log(`Data has been read`);
         resolve(lines);
       });
     });
